@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow">
+<title>Kubatsira Microcrédito · Ligar a app</title>
+<style>
+  :root { --fundo: #031e41; --cartao: #ffffff; --texto: #1e2837; --suave: #5b6b80; --azul: #2f80ed; }
+  @media (prefers-color-scheme: dark) { :root { --cartao: #10223d; --texto: #e8eef7; --suave: #a9b8cc; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+         padding: 16px; background: var(--fundo); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .cartao { background: var(--cartao); color: var(--texto); max-width: 420px; width: 100%;
+            border-radius: 20px; padding: 28px 22px; text-align: center; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  p { color: var(--suave); line-height: 1.5; margin: 10px 0; }
+  .botao { display: block; background: var(--azul); color: #fff; text-decoration: none; font-weight: 700;
+           border-radius: 14px; padding: 16px; margin: 18px 0 10px; font-size: 17px; }
+  .secundario { background: transparent; color: var(--azul); border: 2px solid var(--azul); padding: 12px; font-size: 15px; }
+  .aviso { font-size: 13px; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main class="cartao">
+  <h1>🔑 Kubatsira Microcrédito</h1>
+
+  <div id="comCodigo" hidden>
+    <p>Toque no botão para ligar a app deste telemóvel à base de dados da empresa.</p>
+    <a id="abrir" class="botao" href="#">Abrir e ligar a app</a>
+    <p class="aviso">Ainda não tem a app?</p>
+    <a class="botao secundario" href="https://github.com/timane-tech/loaneasy-versoes/releases/latest/download/KubatsiraMicrocredito.apk">⬇ Descarregar a app</a>
+    <p class="aviso">Depois de instalar, volte a tocar no link que recebeu.</p>
+  </div>
+
+  <div id="semCodigo" hidden>
+    <p>Este link está incompleto. Peça ao Administrador que o envie outra vez.</p>
+  </div>
+
+  <div id="naoAndroid" hidden>
+    <p>Abra este link no telemóvel Android onde está (ou vai estar) instalada a app Kubatsira Microcrédito.</p>
+  </div>
+</main>
+<script>
+  // O código vem depois do "#": essa parte do endereço nunca é enviada a nenhum servidor.
+  var codigo = decodeURIComponent((location.hash || "").replace(/^#/, "")).trim();
+  // Tira o código da barra de endereço e do histórico do navegador
+  if (codigo) history.replaceState(null, "", location.pathname);
+  var android = /Android/i.test(navigator.userAgent);
+  if (!android) {
+    document.getElementById("naoAndroid").hidden = false;
+  } else if (!/^KUB1\.[A-Za-z0-9_\-=]+$/.test(codigo)) {
+    document.getElementById("semCodigo").hidden = false;
+  } else {
+    document.getElementById("comCodigo").hidden = false;
+    document.getElementById("abrir").href =
+      "intent://ligar?c=" + encodeURIComponent(codigo) + "#Intent;scheme=kubatsira;package=mz.loaneasy.neon.real;end";
+  }
+</script>
+</body>
+</html>
